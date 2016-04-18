@@ -1,5 +1,7 @@
 var mysql      = require('mysql');
 var colors = require('colors');
+var queries = require('./queries');
+
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
@@ -9,9 +11,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var showInventory = 'SELECT * FROM Bamazon.Products';
-
-connection.query(showInventory, function(err, rows, fields) {
+connection.query(queries.showInventory, function(err, rows, fields) {
   if (err) throw err;
 
   // query the database, return all items for sale.
