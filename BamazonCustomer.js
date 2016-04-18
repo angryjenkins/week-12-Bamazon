@@ -9,7 +9,9 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('SELECT * FROM Bamazon.Products', function(err, rows, fields) {
+var showInventory = 'SELECT * FROM Bamazon.Products';
+
+connection.query(showInventory, function(err, rows, fields) {
   if (err) throw err;
 
   // query the database, return all items for sale.
@@ -18,8 +20,6 @@ connection.query('SELECT * FROM Bamazon.Products', function(err, rows, fields) {
     console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + (" (" + rows[i].StockQuantity + " available)").grey);
   }
 });
-
-
 
 // prompt for an order query.
 
