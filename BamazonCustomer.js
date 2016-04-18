@@ -48,8 +48,8 @@ connection.query(queries.showInventory, function(err, rows, fields) {
     // Log the results.
     //replace these with mySQL queries from wseparate module. RIght now it only logs the number you type.
     console.log('Command-line input received:');
-    console.log('  You want Item #: ' + result.ItemID);
-
+    console.log('  You want Item #: ' + result.ItemID + " -- " + rows[result.ItemID-1].Name.bold);
+    return result.ItemID;
   });
 
 });
