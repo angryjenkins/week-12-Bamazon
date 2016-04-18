@@ -12,3 +12,7 @@ CREATE TABLE `Bamazon`.`Products` (
 
 -- need mysql --local-infile to run this script
 LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
+
+-- query to show all available products on program load.
+SELECT * FROM Bamazon.Products;
+
