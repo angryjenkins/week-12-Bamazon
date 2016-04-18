@@ -6,7 +6,7 @@ CREATE TABLE `Bamazon`.`Products` (
   `Name` VARCHAR(60) NOT NULL,
   `DepartmentName` VARCHAR(45) NOT NULL,
   `Price` DECIMAL(13,4) NOT NULL,
-  `StockQuantity` NUMERIC(3,0) NOT NULL,
+  `StockQuantity` INT(4) NOT NULL,
   PRIMARY KEY (`ItemID`)
 );
 
@@ -15,4 +15,3 @@ LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
 
 -- query to show all available products on program load.
 SELECT * FROM Bamazon.Products;
-
