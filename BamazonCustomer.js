@@ -1,7 +1,7 @@
-var mysql      = require('mysql');
-var colors = require('colors');
+var mysql   = require('mysql');
+var colors  = require('colors');
 var queries = require('./queries');
-var prompt = require('prompt');
+var prompt  = require('prompt');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -36,7 +36,7 @@ connection.connect();
 connection.query(queries.showInventory, function(err, rows, fields) {
   if (err) throw err;
 
-  console.log("Bamazon Storefront".bold.cyan);
+  console.log("Welcome to the Bamazon Storefront".bold.cyan);
   for(var i=0;i<rows.length;i++){
     console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + (" (" + rows[i].StockQuantity + " available)").grey);
   }
