@@ -10,4 +10,5 @@ CREATE TABLE `Bamazon`.`Products` (
   PRIMARY KEY (`ItemID`)
 );
 
+-- need mysql --local-infile to run this script
 LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
