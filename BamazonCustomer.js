@@ -14,7 +14,7 @@ var schema = {
   properties: {
     ItemID: {
       description: 'Enter an ItemID to get started!',
-      message: 'error. try again.',
+      message: 'error. please enter an item NUMBER.',
       required: true
     }
   }
@@ -25,7 +25,7 @@ prompt.start();
 prompt.get(schema, function (err, result) {
   //
   // Log the results.
-  //
+  //replace these with mySQL queries from wseparate module. RIght now it only logs the number you type.
   console.log('Command-line input received:');
   console.log('  You want Item #: ' + result.ItemID);
 
