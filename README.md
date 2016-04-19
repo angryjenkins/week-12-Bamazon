@@ -7,8 +7,8 @@ Welcome to the virtual Bamazon storefront!! In this assignment I was tasked to b
 
 > "ERROR 1148: The used command is not allowed with this MySQL version"
 
-It turns out MySQL by default does not allow this feature, as it can be a security breach. Therefore on my Linux laptop I could not use the Data Import Wizard. I did this through the command line using the command *mysql --local-infile* and then loaded my CSV into my table using this script:
+It turns out MySQL by default does not allow this feature, as it can be a security breach. Therefore on my Linux laptop I could not use the Data Import Wizard. I did this through the command line using the command *mysql u root -p --local-infile* and then loaded my CSV into my table using this script:
 
 > LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
 
-Now that data is loaded into the table, I can query it using Node. The script *BamazonCustomer.js* does this, using the NPM package "prompt" to take in user input and another npm package, mysql, to query the database that tracks items. 
+Now that data is loaded into the table, I can query it using Node. The script *BamazonCustomer.js* does this, using the NPM package "prompt" to take in user input and another npm package, mysql, to query the database that tracks items. To facilitate the queries, I decided to add them to their own module, so I could use them there instead of typing them repeatedly. The module is saves as *queries.js*.
