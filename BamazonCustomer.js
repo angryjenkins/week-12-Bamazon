@@ -14,12 +14,12 @@ var schema = {
   properties: {
     ItemID: {
       description: 'Enter an ItemID to get started!'.cyan,
+      type: 'integer',
       message: 'error. please enter an item NUMBER.'.red,
       required: true
     }
   }
 };
-
 
 // GOTTADO: prompt for an order query.
 //if input is INT, query by ItemID. If a VARCHAR, query by Name. **aDD qUERY TO A qUERYtABLE.
@@ -43,14 +43,45 @@ connection.query(queries.showInventory, function(err, rows, fields) {
     // Log the results.
     //replace these with mySQL queries from wseparate module. RIght now it only logs the number you type.
     console.log('Command-line input received:');
-    console.log('  You want Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
+    console.log('  Interested in Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
     
-    if(selectedRow.StockQuantity<1){
-      console.log('Sorry, we are all out of %s', selectedRow.Name);
-      console.log('Please choose another item.');
-      return;
-    } else {
-      console.log('You are in luck! We have ' + selectedRow.StockQuantity + ' of those left in stock.');
+
+    switch(selectedRow.StockQuantity){
+      case selectedRow.StockQuantity < 1:
+        console.log('Sorry, we are all out of %s',selectedRow.Name);
+        break;
+      default:
+        console.log('You are in luck! We have '.green + selectedRow.StockQuantity + ' of those left in stock.'.green);
+
+        var schema2 = {
+          properties: {
+            Quantity: {
+              description: 'How many of this item would you like?'.cyan,
+              type: 'integer',
+              message: 'error. please enter a NUMBER.'.red,
+              required: true
+            }
+          }
+        };
+
+        prompt.get(schema2,function (err, result){
+
+          // switch(result.Quantity){
+          //   case (result.Quantity > selectedRow.StockQuantity){
+          //     console.log('Sorry, there are only ' + selectedRow.StockQuantity + ' available.');
+          //     break;
+          //   default:
+          //     console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
+
+          //   }
+
+            if(result.Quantity > selectedRow.StockQuantity){
+              console.log('Sorry, there are only '.red + selectedRow.StockQuantity + ' available.'.red);
+            } else{
+              console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
+            }
+
+        });
     }
   
   });
