@@ -13,17 +13,12 @@ var connection = mysql.createConnection({
 var schema = {
   properties: {
     ItemID: {
-      description: 'Enter an ItemID to get started!',
-      message: 'error. please enter an item NUMBER.',
+      description: 'Enter an ItemID to get started!'.cyan,
+      message: 'error. please enter an item NUMBER.'.red,
       required: true
     }
   }
 };
-
-
-
-
-
 
 
 // GOTTADO: prompt for an order query.
@@ -38,20 +33,27 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
   console.log("Welcome to the Bamazon Storefront!".bold.cyan);
   for(var i=0;i<rows.length;i++){
-    console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + (" (" + rows[i].StockQuantity + " available)").grey);
+    console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + " (" + rows[i].StockQuantity + " available)");5
   }
 
   prompt.start();
 
   prompt.get(schema, function (err, result) {
-    //
+    var selectedRow = rows[result.ItemID-1];
     // Log the results.
     //replace these with mySQL queries from wseparate module. RIght now it only logs the number you type.
     console.log('Command-line input received:');
-    console.log('  You want Item #: ' + result.ItemID + " -- " + rows[result.ItemID-1].Name.bold);
-    return result.ItemID;
+    console.log('  You want Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
+    
+    if(selectedRow.StockQuantity<1){
+      console.log('Sorry, we are all out of %s', selectedRow.Name);
+      console.log('Please choose another item.');
+      return;
+    } else {
+      console.log('You are in luck! We have ' + selectedRow.StockQuantity + ' of those left in stock.');
+    }
+  
   });
-
 });
 
 connection.end();

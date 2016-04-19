@@ -1,6 +1,7 @@
 CREATE DATABASE Bamazon;
 USE Bamazon;
 
+--script to create Products table
 CREATE TABLE `Bamazon`.`Products` (
   `ItemID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(60) NOT NULL,
