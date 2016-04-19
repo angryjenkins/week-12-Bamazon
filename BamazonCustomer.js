@@ -15,7 +15,7 @@ var schema = {
     ItemID: {
       description: 'Enter an ItemID to get started!'.cyan,
       type: 'integer',
-      message: 'error. please enter an item NUMBER.'.red,
+      message: 'Invalid input -- Please enter an item NUMBER.'.red.bold,
       required: true
     }
   }
@@ -33,57 +33,59 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
   console.log("Welcome to the Bamazon Storefront!".bold.cyan);
   for(var i=0;i<rows.length;i++){
-    console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + " (" + rows[i].StockQuantity + " available)");5
+    console.log(("item " + rows[i].ItemID).black.bgCyan + " " + rows[i].Name.bold + " || $" + rows[i].Price.toFixed(2) + " (" + rows[i].StockQuantity + " available)");
   }
 
   prompt.start();
 
   prompt.get(schema, function (err, result) {
     var selectedRow = rows[result.ItemID-1];
-    // Log the results.
-    //replace these with mySQL queries from wseparate module. RIght now it only logs the number you type.
-    console.log('Command-line input received:');
-    console.log('  Interested in Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
-    
 
-    switch(selectedRow.StockQuantity){
-      case selectedRow.StockQuantity < 1:
-        console.log('Sorry, we are all out of %s',selectedRow.Name);
-        break;
-      default:
-        console.log('You are in luck! We have '.green + selectedRow.StockQuantity + ' of those left in stock.'.green);
+    if(result.ItemID > rows.length){
+      console.log('Sorry, there is no Item # %s'.bold.red, result.ItemID);
+    } else {
+      console.log('Command-line input received:');
+      console.log('  Interested in Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
+      
 
-        var schema2 = {
-          properties: {
-            Quantity: {
-              description: 'How many of this item would you like?'.cyan,
-              type: 'integer',
-              message: 'error. please enter a NUMBER.'.red,
-              required: true
+      switch(selectedRow.StockQuantity){
+        case selectedRow.StockQuantity < 1:
+          console.log('Sorry, we are all out of %s',selectedRow.Name);
+          break;
+        default:
+          console.log('You are in luck! We have '.green + selectedRow.StockQuantity + ' of those in stock.'.green);
+
+          var schema2 = {
+            properties: {
+              Quantity: {
+                description: 'How many of this item would you like?'.cyan,
+                type: 'integer',
+                message: 'Invalid input - please enter a NUMBER.'.red.bold,
+                required: true
+              }
             }
-          }
-        };
+          };
 
-        prompt.get(schema2,function (err, result){
+          prompt.get(schema2,function (err, result){
 
-          // switch(result.Quantity){
-          //   case (result.Quantity > selectedRow.StockQuantity){
-          //     console.log('Sorry, there are only ' + selectedRow.StockQuantity + ' available.');
-          //     break;
-          //   default:
-          //     console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
+            // switch(result.Quantity){
+            //   case (result.Quantity > selectedRow.StockQuantity){
+            //     console.log('Sorry, there are only ' + selectedRow.StockQuantity + ' available.');
+            //     break;
+            //   default:
+            //     console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
 
-          //   }
+            //   }
 
-            if(result.Quantity > selectedRow.StockQuantity){
-              console.log('Sorry, there are only '.red + selectedRow.StockQuantity + ' available.'.red);
-            } else{
-              console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
-            }
+              if(result.Quantity > selectedRow.StockQuantity){
+                console.log('Sorry, there are only '.red.bold + selectedRow.StockQuantity + ' available.'.red.bold);
+              } else{
+                console.log(result.Quantity + " " + (selectedRow.Name).green + '-- this  order will cost '.green + "$".bold + (result.Quantity * selectedRow.Price).toFixed(2).bold);
+              }
 
-        });
+          });
+      }
     }
-  
   });
 });
 
