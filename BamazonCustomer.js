@@ -84,6 +84,13 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
                 //prompt are you sure you want to purchase? yes/no. 
                 //IF YES, update the table decreasing the quantity by the ordered amount.
+
+
+                
+                // connection.query(queries.updateAfterOrder, function(err, rows, fields) {
+                //   if (err) throw err;
+
+                // });
               }
           });
         }
