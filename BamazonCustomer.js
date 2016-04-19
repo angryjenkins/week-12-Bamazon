@@ -80,12 +80,14 @@ connection.query(queries.showInventory, function(err, rows, fields) {
               if(result.Quantity > selectedRow.StockQuantity){
                 console.log('Sorry, there are only '.red.bold + selectedRow.StockQuantity + ' available.'.red.bold);
               } else{
-                console.log(result.Quantity + " " + (selectedRow.Name).green + '-- this  order will cost '.green + "$".bold + (result.Quantity * selectedRow.Price).toFixed(2).bold);
-              }
+                console.log(result.Quantity + " x " + (selectedRow.Name).green.bold + ' -- this  order will cost '.green + "$".bold + (result.Quantity * selectedRow.Price).toFixed(2).bold);
 
+                //prompt are you sure you want to purchase? yes/no. 
+                //IF YES, update the table decreasing the quantity by the ordered amount.
+              }
           });
+        }
       }
-    }
   });
 });
 
