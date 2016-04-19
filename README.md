@@ -11,4 +11,4 @@ It turns out MySQL by default does not allow this feature, as it can be a securi
 
 > LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
 
-Now that data is loaded into the table, I can query it using Node. The script *BamazonCustomer.js* does this.
+Now that data is loaded into the table, I can query it using Node. The script *BamazonCustomer.js* does this, using the NPM package "prompt" to take in user input and another npm package, mysql, to query the database that tracks items. 
