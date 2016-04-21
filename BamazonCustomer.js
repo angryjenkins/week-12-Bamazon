@@ -81,9 +81,14 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
 
                 var newQuantity = selectedRow.StockQuantity - orderQuantity;
-                connection.query(queries.show, function(err, rows, fields) {
+
+                //this connection is causing an error - must figure out where to end the connection.
+                connection.query(queries.updateAfterOrder, function(err, rows, fields) {
                   if (err) throw err;
                   console.log('Inventory updated. Remaining: ' + newQuantity + ' x ' +selectedRow.Name);
+                
+                connection.end();
+
                 });
               }
           });
@@ -92,4 +97,3 @@ connection.query(queries.showInventory, function(err, rows, fields) {
   });
 });
 
-connection.end();
