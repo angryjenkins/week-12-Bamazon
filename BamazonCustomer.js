@@ -68,29 +68,23 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
           prompt.get(schema2,function (err, result){
 
-            // switch(result.Quantity){
-            //   case (result.Quantity > selectedRow.StockQuantity){
-            //     console.log('Sorry, there are only ' + selectedRow.StockQuantity + ' available.');
-            //     break;
-            //   default:
-            //     console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
-
-            //   }
-
               if(result.Quantity > selectedRow.StockQuantity){
                 console.log('Sorry, there are only '.red.bold + selectedRow.StockQuantity + ' available.'.red.bold);
               } else{
                 console.log(result.Quantity + " x " + (selectedRow.Name).green.bold + ' -- this  order will cost '.green + "$".bold + (result.Quantity * selectedRow.Price).toFixed(2).bold);
 
+                var orderQuantity = result.Quantity;
+
+
                 //prompt are you sure you want to purchase? yes/no. 
                 //IF YES, update the table decreasing the quantity by the ordered amount.
 
 
-                
-                // connection.query(queries.updateAfterOrder, function(err, rows, fields) {
-                //   if (err) throw err;
-
-                // });
+                var newQuantity = selectedRow.StockQuantity - orderQuantity;
+                connection.query(queries.show, function(err, rows, fields) {
+                  if (err) throw err;
+                  console.log('Inventory updated. Remaining: ' + newQuantity + ' x ' +selectedRow.Name);
+                });
               }
           });
         }
