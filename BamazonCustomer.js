@@ -1,6 +1,5 @@
 var mysql   = require('mysql');
 var colors  = require('colors');
-var queries = require('./queries');
 var prompt  = require('prompt');
 
 var connection = mysql.createConnection({
@@ -28,7 +27,7 @@ var schema = {
 
 connection.connect();
 
-connection.query(queries.showInventory, function(err, rows, fields) {
+connection.query("SELECT * FROM Bamazon.Products", function(err, rows, fields) {
   if (err) throw err;
 
   console.log("Welcome to the Bamazon Storefront!".bold.cyan);
@@ -43,6 +42,8 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
     if(result.ItemID > rows.length){
       console.log('Sorry, there is no Item # %s'.bold.red, result.ItemID);
+      connection.end();
+
     } else {
       console.log('Command-line input received:');
       console.log('  Interested in Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
@@ -68,22 +69,28 @@ connection.query(queries.showInventory, function(err, rows, fields) {
 
           prompt.get(schema2,function (err, result){
 
-            // switch(result.Quantity){
-            //   case (result.Quantity > selectedRow.StockQuantity){
-            //     console.log('Sorry, there are only ' + selectedRow.StockQuantity + ' available.');
-            //     break;
-            //   default:
-            //     console.log(result.Quantity + " " + selectedRow.Name + '-- this  order will cost $' + (result.Quantity * selectedRow.Price).toFixed(2));
-
-            //   }
-
               if(result.Quantity > selectedRow.StockQuantity){
                 console.log('Sorry, there are only '.red.bold + selectedRow.StockQuantity + ' available.'.red.bold);
+                connection.end();
               } else{
                 console.log(result.Quantity + " x " + (selectedRow.Name).green.bold + ' -- this  order will cost '.green + "$".bold + (result.Quantity * selectedRow.Price).toFixed(2).bold);
 
                 //prompt are you sure you want to purchase? yes/no. 
                 //IF YES, update the table decreasing the quantity by the ordered amount.
+
+
+                var newQuantity = selectedRow.StockQuantity - result.Quantity;
+
+                //this connection is causing an error - must figure out where to end the connection.
+                connection.query("UPDATE Products SET StockQuantity=" + newQuantity + " WHERE ItemID =" + selectedRow.ItemID, function(err, rows, fields) {
+                  if (err) throw err;
+
+                  //prompt confirmation?
+                  console.log('Inventory updated. Remaining: ' + newQuantity + ' x ' +selectedRow.Name);
+                
+                connection.end();
+
+                });
               }
           });
         }
@@ -91,4 +98,3 @@ connection.query(queries.showInventory, function(err, rows, fields) {
   });
 });
 
-connection.end();
