@@ -11,4 +11,4 @@ It turns out MySQL by default does not allow this feature, as it can be a securi
 
 > LOAD DATA LOCAL INFILE 'initial_inventory.csv' INTO TABLE Products;
 
-View the process of making thr BamazonCustomer.js SQL scripts here -- https://youtu.be/vO7vGTtXuOk (no audio).
+View the process of making thr BamazonCustomer.js SQL scripts here -- https://vimeo.com/163919722
