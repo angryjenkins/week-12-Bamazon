@@ -47,6 +47,7 @@ connection.query("SELECT * FROM Bamazon.Products", function(err, rows, fields) {
     } else {
       console.log('Command-line input received:');
       console.log('  Interested in Item #: ' + result.ItemID + " -- " + selectedRow.Name.bold);
+      description: 'Enter an ItemID to get started!'
       
 
       switch(selectedRow.StockQuantity){
